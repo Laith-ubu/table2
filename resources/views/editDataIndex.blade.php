@@ -7,7 +7,7 @@
         <div class="containerr">
 
             <div class="header-title">
-                <h2>Edit Product</h2>
+                <h2>Edit Reciepets</h2>
             </div>
             @if (isset($product) && !empty($product))
                 <form action="/updateDataIndex/{{ $product->id }}" method="POST">
@@ -32,6 +32,20 @@
                         </div>
 
                         <div class="row">
+                            <label for="editProductSelect">
+                                <select multiple="multiple" class="select2test" id="editProductSelect" name="productSelect[]" style="width: 230px !important; ">
+                                    <option  ></option>
+                                    @foreach($allProducts as $productOption)
+                                        <option value="{{ $productOption->id }}" 
+                                            {{ $linkedProductIds->contains($productOption->id) ? 'selected' : '' }}>
+                                            {{ $productOption->name_product }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="row">
                             <label for="total_recipets">Total: </label>
                             <input name="total_recipets" id="total_recipets" type="number" class="input-div" value="{{ $product->total_recipets }}">
                         </div>
@@ -48,4 +62,10 @@
     @include ('shared_footer')
 
 </body>
+<script>
+    const message = @json(session('success'));
+    console.log(message);
+</script>
+<script src="{{ '/recipets.js' }}"></script>
+
 @include ('footer_scripts')

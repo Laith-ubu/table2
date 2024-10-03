@@ -41,7 +41,37 @@ $(document).ready(function() {
         ],
     });
 
-    var successMessage = message; 
+    $(document).ready(function() {
+        $('#productSelect').select2({
+            placeholder: 'Select a product',
+        });
+
+        $('#editProductSelect').select2({
+            placeholder: 'Select a product',
+        });
+    
+        $('#productSelect').on('select2:open', function() {
+            $('.select2-selection__clear').attr('aria-hidden', false);
+        });
+        
+        $.ajax({
+            url: '/api/products',
+            method: 'GET',
+            success: function(data) {
+                $('#productSelect').empty(); // Clear existing options
+                $('#productSelect').append(new Option( '', true, true)); // Placeholder option
+                data.forEach(function(product) {
+                    $('#productSelect').append(new Option(product.name_product, product.id));
+                });
+                $('#productSelect').select2(); // Reinitialize Select2
+            },
+            error: function(xhr) {
+                console.error('Error fetching products:', xhr);
+            }
+        });
+    });
+
+    var successMessage = typeof message !== 'undefined' ? message : null; 
     if (successMessage) {
         Swal.fire({
             title: "Done!",

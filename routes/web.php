@@ -24,6 +24,11 @@ Route::get('/editDataIndex/{id}', [recipetController::class, 'edit']);
 Route::put('/updateDataIndex/{id}', [recipetController::class,'update']);
 Route::get('/delete/{id}', [recipetController::class, 'destroy']);
 Route::get('/recipets/data', [RecipetController::class, 'getRecipets'])->name('Recipets.data');
+Route::post('/recipetWithSelect', [recipetController::class,'storeSelect']);
+
+Route::get('/api/products', [ProductController::class, 'getProductsName'])->name('products.api');
+Route::get('/api/recipets', [recipetController::class, 'getRecipetsServer'])->name('recipets.api');
+
 
 Route::view('/test', 'test');
 Route::view('/addNewItem', 'addNew');

@@ -45,7 +45,7 @@ $(document).ready(function() {
                 }
             }
         ],
-        dom: 'Blfrtip', // 'B' for buttons, 'l' for length changing input control
+        dom: 'Bfrtip', // Ensure buttons are included
         buttons: [
             {
                 text: 'Excel',

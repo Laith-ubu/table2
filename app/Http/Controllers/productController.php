@@ -65,7 +65,6 @@ class productController extends Controller
         $product->save();
         $products = ProductModel::all();
     
-        // return view('products', ['products' => $products]);
         return redirect()->route('products')
                         ->with('success', 'Your message has been sent successfully!');
 
@@ -94,6 +93,10 @@ class productController extends Controller
         return DataTables::of($query)
         ->make(true); 
     }
-
+    public function getProductsName()
+    {
+        $products = ProductModel::select('id','name_product')->distinct()->get();
+        return response()->json($products);
+    }
 
 }
