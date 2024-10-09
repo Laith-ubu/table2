@@ -77,14 +77,10 @@ class recipetController extends Controller
     }
     public function getRecipets()
     {
-        $query = RecipetModel::query();
-        return DataTables::of($query)
-        ->make(true); 
+        return RecipetModel::getData();
     }
     public function storeSelect(Request $request){
         try {
-            if ($request->isMethod('post')) {
-               
                 $request->validate([
                     "name_recipets" => "required|string",
                     "description_recipets" => "nullable|string",
@@ -100,13 +96,8 @@ class recipetController extends Controller
                 $recipet->products()->attach($request->productSelect);
      
                 return redirect('index')->with('success', 'Recipet created successfully.');        
-             }
-            else{
-                return 'method is not post ';
-            }
 
-        }catch(\Exception $e)
-        {
+        }catch(\Exception $e){
             return $e->getMessage();
         }
     }

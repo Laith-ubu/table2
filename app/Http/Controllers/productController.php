@@ -71,14 +71,11 @@ class productController extends Controller
     }
     public function getProducts()
     {
-        $query = ProductModel::query();
-        return DataTables::of($query)
-        ->make(true); 
+        return ProductModel::getData();
     }
     public function getProductsName()
     {
-        $products = ProductModel::select('id','name_product')->distinct()->get();
+        $products = ProductModel::select('id','name_product')->get();
         return response()->json($products);
     }
-
 }
