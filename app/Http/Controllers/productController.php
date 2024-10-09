@@ -8,88 +8,70 @@ use Yajra\DataTables\DataTables;
 
 class productController extends Controller
 {
-    public function add(Request $request){
-        try{
-            if($request->isMethod('post')){
-
-                $request->validate([
-                    'name_product' => 'required|string',
-                    'description_product' => 'nullable|string',
-                    'price_product' => 'required|numeric',
-                ]);
-                
-                $attributes = $request->only('name_product', 'description_product', 'price_product', 'status_product');
-
-                if (count($attributes) == 3) {
-                    $attributes['status_product'] = 'Not Available';
-                }
-                
-                ProductModel::create($attributes);
-                return redirect('products');
-            }
-            else{
-                echo 'Form not Submitted';
-            }
-        }catch(\Exception $e){
-            echo $e->getMessage();
-        }
-    }public function index(){
-        $products = ProductModel::latest()->paginate();
-        return view('products',compact('products'));
-    }
-    public function edit(Request $request){
-       
-        $product = ProductModel::find($request->id);
-        if (!$product) {
-            return redirect()->back()->with('error', 'Product not found.');
-        }
-        return view('editData', ['product' => $product])->with('success', 'Product updated successfully.');;
-    }
-    public function update(Request $request)
+    public function showAddForm()
     {
-        $request->validate([
-            'id' => 'required|integer|exists:products,id',
-            'name_product' => 'required|string|max:255',
-            'description_product' => 'nullable|string',
-            'price_product' => 'required|numeric',
-            'status_product' => 'nullable|string|in:Available,Not Available',
-        ]);
-    
-        $product = ProductModel::find($request->id);
+        return redirect('/addNeww');
+    }
+    public function add(Request $request){
         
-        $product->name_product = $request->name_product;
-        $product->description_product = $request->description_product;
-        $product->price_product = $request->price_product;
-        $product->status_product = $request->status_product ?? 'Not Available';
+        try{
+            $request->validate([
+                'name_product' => 'required|string',
+                'description_product' => 'nullable|string',
+                'price_product' => 'required|numeric',
+                'status_product' => 'nullable|string',
+            ]);
     
-        $product->save();
-        $products = ProductModel::all();
-    
-        return redirect()->route('products')
-                        ->with('success', 'Your message has been sent successfully!');
+            $attributes = $request->only('name_product', 'description_product', 'price_product', 'status_product');
 
-    }
-    public function delete(Request $request) {
+            $attributes['status_product'] = $request->has('status_product') ? 'Available' : 'Not Available';
 
-        $request->validate([
-            'id' => 'required|integer|exists:products,id',
-        ]);
-    
-        $product = ProductModel::find($request->id);
-        if (!$product) {
-            return redirect()->back()->with('error', 'Product not found.');
+            ProductModel::create($attributes);
+            return redirect('/products')->with('success', 'Product Created successfully.');;
+
+        }catch(\Exception $e){
+            return $e->getMessage();
         }
-
-        $product->delete();
-        $products = ProductModel::all();
-    
-        return view('products', ['products' => $products])->with('success', 'Product deleted successfully.');
     }
-    
+    public function index(){
+        $products = ProductModel::all();
+        return view('products/products',compact('products'));
+    }
+    public function editOrUpdate(Request $request)
+    {
 
+        if ($request->isMethod('put')) {
+
+            $product = ProductModel::findOrFail($request->id);
+            $request->validate([
+                'id' => 'required|integer|exists:products,id',
+                'name_product' => 'required|string|max:255',
+                'description_product' => 'nullable|string',
+                'price_product' => 'required|numeric',
+                'status_product' => 'nullable|string|in:Available,Not Available',
+            ]);
+
+            $product->update(array_merge(
+                $request->only(['name_product', 'description_product', 'price_product']),
+                ['status_product' => $request->has('status_product') ? 'Available' : 'Not Available']
+            ));
+            return redirect()->route('products')->with('success', 'Product updated successfully.');
+        
+        } else {
+
+            $product = ProductModel::findOrFail($request->id);
+            return view('products/editData', ['product' => $product]);
+        }
+    }
+    public function delete(Request $request) 
+    {
+        $product = ProductModel::findOrFail($request->id);
+        $product->delete();
+        return redirect()->route('products')->with('success', 'Your row has been deleted successfully!');
+    }
     public function getProducts()
     {
-        $query = $this->getProductsQuery();
+        $query = ProductModel::query();
         return DataTables::of($query)
         ->make(true); 
     }

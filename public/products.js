@@ -30,7 +30,10 @@ $(document).ready(function() {
             },
             { 
                 data: 'status_product', 
-                name: 'status_product' 
+                name: 'status_product',
+                render: function(data) {
+                    return data === 'Available' ? 'Available' : 'Not Available';
+                }
             },
             { 
                 data: 'action', 
@@ -114,7 +117,7 @@ $(document).ready(function() {
     if (successMessage) {
         Swal.fire({
             title: "Done!",
-            text: "Edit Successfully!",
+            text: successMessage,
             icon: "success"
         });
     }

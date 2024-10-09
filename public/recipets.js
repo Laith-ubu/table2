@@ -33,7 +33,7 @@ $(document).ready(function() {
                 searchable: false,
                 render: function(data, type, row) {
                     return `
-                        <a href="/editDataIndex/${row.id}" class="btn btn-primary">Edit</a>
+                        <a href="/editRecipet/${row.id}" class="btn btn-primary">Edit</a>
                         <a href="delete/${row.id}" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
                     `;
                 }

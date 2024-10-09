@@ -13,25 +13,23 @@ Route::get('/login', function () {
 
 Route::post('/newData', [productController::class,'add']);
 Route::get('/products', [ProductController::class, 'index'])->name('products');
-Route::get('/editData', [ProductController::class,'edit']);
-Route::put('/updateData', [ProductController::class,'update']);
 Route::get('/delete', [ProductController::class,'delete']);
 Route::get('/products/data', [ProductController::class, 'getProducts'])->name('products.data');
+Route::get('/productNewItem', [ProductController::class, 'showAddForm'])->name('products.add'); 
+Route::get('/api/products', [ProductController::class, 'getProductsName'])->name('products.api');
+Route::match(['get','put'], '/editData', [ProductController::class, 'editOrUpdate']);
 
 Route::post('/newDataRecipet', [recipetController::class,'store']);
 Route::get('/index', [recipetController::class, 'index'])->name('recipet.index');
-Route::get('/editDataIndex/{id}', [recipetController::class, 'edit']);
-Route::put('/updateDataIndex/{id}', [recipetController::class,'update']);
 Route::get('/delete/{id}', [recipetController::class, 'destroy']);
 Route::get('/recipets/data', [RecipetController::class, 'getRecipets'])->name('Recipets.data');
 Route::post('/recipetWithSelect', [recipetController::class,'storeSelect']);
-
-Route::get('/api/products', [ProductController::class, 'getProductsName'])->name('products.api');
-Route::get('/api/recipets', [recipetController::class, 'getRecipetsServer'])->name('recipets.api');
+Route::match(['get','post'], '/editRecipet/{id}', [RecipetController::class, 'editOrUpdate'])->name('recipet.editOrUpdate');
+Route::get('/reciepetNewItem', [recipetController::class, 'showAddForm'])->name('reciepets.add'); 
 
 
 Route::view('/test', 'test');
-Route::view('/addNewItem', 'addNew');
-Route::view('/profile', 'profile');
-Route::view('/contactUs', 'contactUs');
-Route::view('/addNewRecipet','newRecipet'); 
+Route::view('/addNeww', 'products/addNew');
+Route::view('/profile', 'profile/profile');
+Route::view('/contactUs', 'contactUs/contactUs');
+Route::view('/addNewRecipett','reciepets/newRecipet');
