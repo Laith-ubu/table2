@@ -23,7 +23,6 @@ class productController extends Controller
             ]);
     
             $attributes = $request->only('name_product', 'description_product', 'price_product', 'status_product');
-
             $attributes['status_product'] = $request->has('status_product') ? 'Available' : 'Not Available';
 
             ProductModel::create($attributes);
