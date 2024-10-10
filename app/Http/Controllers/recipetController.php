@@ -18,23 +18,6 @@ class recipetController extends Controller
         $products = RecipetModel::all();
         return view('reciepets/reciepets',compact('products'));
     }
-    public function store(Request $request)
-    {
-        try {
-                $request->validate([
-                    "name_recipets"=> "required|string",
-                    "description_recipets"=> "nullable|string",
-                    "quantity_recipets"=> "required|numeric",
-                    "total_recipets"=> "required|numeric",
-                ]);
-
-                RecipetModel::create($request->all());
-                return redirect('reciepets/reciepets');
-        }
-        catch(\Exception $e){
-            return $e->getMessage();
-        }
-    }
     public function editOrUpdate(Request $request, string $id)
     {
         if ($request->isMethod('post')) {

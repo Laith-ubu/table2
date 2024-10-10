@@ -74,7 +74,7 @@ class productController extends Controller
     }
     public function getProductsName()
     {
-        $products = ProductModel::select('id','name_product')->get();
+        $products = ProductModel::getProductNames();
         return response()->json($products);
     }
 }

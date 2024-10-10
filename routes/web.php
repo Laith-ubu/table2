@@ -19,7 +19,6 @@ Route::get('/productNewItem', [ProductController::class, 'showAddForm'])->name('
 Route::get('/api/products', [ProductController::class, 'getProductsName'])->name('products.api');
 Route::match(['get','put'], '/editData', [ProductController::class, 'editOrUpdate']);
 
-Route::post('/newDataRecipet', [recipetController::class,'store']);
 Route::get('/index', [recipetController::class, 'index'])->name('recipet.index');
 Route::get('/delete/{id}', [recipetController::class, 'destroy']);
 Route::get('/recipets/data', [RecipetController::class, 'getRecipets'])->name('Recipets.data');
